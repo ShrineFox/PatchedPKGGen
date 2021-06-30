@@ -13,11 +13,13 @@ namespace PatchedPKGGen
 {
     class Program
     {
+        public static string python = @"C:\Users\Ryan\AppData\Local\Programs\Python\Python39\python.exe";
+
         public static List<Tuple<string, string>> games = new List<Tuple<string, string>>()
         {
             new Tuple<string,string>( "CUSA17416", "Persona 5 Royal USA" ),
             new Tuple<string,string>( "CUSA17419", "Persona 5 Royal EU" ),
-            new Tuple<string,string>( "CUSA06638", "Persona 5 (PS4) EU" )
+            //new Tuple<string,string>( "CUSA06638", "Persona 5 (PS4) EU" )
         };
 
         public static List<Tuple<string, string>> toggles = new List<Tuple<string, string>>()
@@ -73,165 +75,159 @@ namespace PatchedPKGGen
 
         private static void CreatePatches(string game, List<Tuple<string, string>> patches)
         {
-            var combinations = Permutations(patches);
+            string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string gamePath = Path.Combine(Path.Combine(Environment.CurrentDirectory, "ppp"), game);
+            
+            // Remove previous folder contents
+            if (Directory.Exists(gamePath))
+                Directory.Delete(gamePath, true);
+            Console.WriteLine($"Created Empty Game Folder: {gamePath}");
+
+            // Iterate through all combos where both mod_support types aren't present at the same time
+            var combinations = Permutations(patches).Where(x => x.Count() > 0 && !(x.Any(z => z.Item1.Equals("mod_support")) && x.Any(z => z.Item1.Equals("mod_support2"))));
+            List<Tuple<string, string>[]> combinationCheck = combinations.ToList();
             int i = 1;
             int total = combinations.Count();
-
-            foreach (var combination in combinations.Where(x => x.Count() > 0))
+            foreach (var combination in combinations)
             {
-                // Get list of patches in this combo
-                List<string> combinationNames = new List<string>();
-                foreach (var patch in combination) { combinationNames.Add(patch.Item1); }
-                string combinationNamesList = "";
-                foreach (var patchName in combinationNames) { combinationNamesList += $"{patchName} "; }
+                List<string> combinationNames = new List<string>(); // New list of patches in combo
+                string comboPath = gamePath; // New folder for combos to go in
 
-                Console.WriteLine($"Patching {game} EBOOT with {combinationNamesList} ({i}/{combinations.Count()})...");
-
-                //Kill cmd processes
-                foreach (var process in Process.GetProcessesByName("cmd"))
-                    process.Kill();
-
-                //Patch eboot and create new PKG at location
-                string description = "";
-                string path = Environment.CurrentDirectory + $"\\ppp\\{game}";
-                CreateFolder(path);
                 foreach (var patch in combination)
                 {
-                    // Set up paths and Update PKG description
-                    path = Path.Combine(path, patch.Item1);
-                    CreateFolder(path);
-                    description += patch.Item2 + Environment.NewLine;
+                    // Create folder for each patch and save name to args list...
+                    combinationNames.Add(patch.Item1);
+                    comboPath = Path.Combine(comboPath, patch.Item1);
+                    Directory.CreateDirectory(comboPath);
                 }
 
-                // Copy EBOOT to Directory
-                File.Copy(game + ".bin", Path.Combine(path, "eboot.bin"));
+                Console.WriteLine($"Patching {game} EBOOT with {String.Join(", ", combinationNames)} " +
+                    $"({i}/{combinations.Count()})...");
 
-                // Patch EBOOT
-                using (WaitForFile(Path.Combine(path, "eboot.bin"), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
-                Patch(path, combinationNamesList);
+                string inputEbootPath = Path.Combine(programPath, $"{game}.bin");
+                string patchedEbootPath = Path.Combine(programPath, $"{game}.bin--patched.bin");
 
-                // If Patched EBOOT exists...
-                using (WaitForFile(Path.Combine(path, "eboot.bin--patched.bin"), FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
-                if (File.Exists(Path.Combine(path, "eboot.bin--patched.bin")))
+                // If input EBOOT exists...
+                using (WaitForFile(inputEbootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
+                if (File.Exists(inputEbootPath))
                 {
-                    // Rename back to eboot.bin
-                    Console.WriteLine("  Patch Successful!");
-                    File.Delete(Path.Combine(path, "eboot.bin"));
-                    File.Move(Path.Combine(path, "eboot--patched.bin"), Path.Combine(path, "eboot.bin"));
-
-                    // Create PKG and edit metadata with description
-                    Console.WriteLine("  Creating Update PKG...");
-                    CreatePKG(game, path, description);
-                    if (File.Exists(""))
+                    // Patch EBOOT
+                    Patch(inputEbootPath, String.Join(" ", combinationNames));
+                        
+                    // If Patched EBOOT exists...
+                    using (WaitForFile(patchedEbootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
+                    if (File.Exists(patchedEbootPath))
                     {
-                        Console.WriteLine("  PKG Created Successfully!");
+                        CreatePKG(game, patchedEbootPath, String.Join(", ", combinationNames));
                     }
                     else
-                        Console.WriteLine("  PKG Creation Failed.");
+                        Console.WriteLine($"  EBOOT Patch failed. No patched EBOOT found at {patchedEbootPath}");
                 }
                 else
-                {
-                    Console.WriteLine("  Patch Failed.");
-                }
+                    Console.WriteLine($"  EBOOT Patch failed. Could not find input EBOOT at {inputEbootPath}");
+                
                 i++;
             }
-
             Console.WriteLine($"Done");
             Console.ReadKey();
         }
 
-        private static void CreatePKG(string game, string path, string description)
+        private static void CreatePKG(string game, string ebootPath, string description)
         {
-            string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string outputPKG = ""; // Default output PKG
+            // Overwrite EBOOT in PKG with patched one
+            KillCMD();
+            string programPath = Path.GetDirectoryName(ebootPath);
+            string newEbootPath = Path.Combine(Path.Combine(Path.Combine(programPath,"GenGP4"), $"{game}-patch"), "eboot.bin");
+            File.Copy(ebootPath, newEbootPath, true);
+            Console.WriteLine($"  Overwrote PKG EBOOT with patched one.\n" +
+                $"  Creating Update PKG...");
+            
+            string outputPKG = "";
             switch (game) 
             {
                 case "CUSA17416":
-                    outputPKG = Path.Combine(path, $"UP0177-CUSA17416_00-PERSONA5R0000000-A0101-V0100.pkg");
+                    outputPKG = Path.Combine(programPath, $"UP0177-CUSA17416_00-PERSONA5R0000000-A0101-V0100.pkg");
                     break;
                 case "CUSA17419":
-                    outputPKG = Path.Combine(path, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0100.pkg");
+                    outputPKG = Path.Combine(programPath, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0100.pkg");
                     break;
                 case "CUSA06638":
-                    outputPKG = Path.Combine(path, $"EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg");
+                    outputPKG = Path.Combine(programPath, $"EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg");
                     break;
-            } 
-            string newOutputPKG = Path.Combine(path, $"{game}_Patch.PKG"); // Renamed output PKG
-            string eboot = Path.Combine(path, $"eboot.bin"); // Patched EBOOT
-
-            // Remove existing output PKGs
+            }
+            string temp = Path.Combine(Path.Combine(programPath, "GenGP4"), "temp"); // Temp PKG Builder Folder
+            // Delete existing output PKG and Temp folder
             if (File.Exists(outputPKG))
                 File.Delete(outputPKG);
-            if (File.Exists(newOutputPKG))
-                File.Delete(newOutputPKG);
+            if (Directory.Exists(temp))
+                Directory.Delete(temp, true);
 
             // Update PKG description
-            Console.WriteLine("  Updating PKG description...");
+            Console.WriteLine("    Updating PKG description...");
             File.WriteAllText($"{programPath}\\GenGP4\\{game}-patch\\sce_sys\\changeinfo\\changeinfo.xml", $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<changeinfo>\n  <changes app_ver=\"01.01\">\n    <![CDATA[\n{description}\n    ]]>\n  </changes>\n</changeinfo>");
 
-            // Replace EBOOT with new patched one
-            Console.WriteLine("  Replacing EBOOT in PKG...");
-            File.Copy(eboot, $"{programPath}\\GenGP4\\{game}-patch\\eboot.bin", true);
-            File.Delete(eboot);
-
-            //Create PKG from GP4
-            Console.WriteLine("  Running orbis-pub-cmd...");
-            RunCMD($"{programPath}\\GenGP4\\orbis-pub-cmd.exe", $"img_create --oformat pkg --tmp_path ./ {game}-patch.gp4 ./");
+            // Create PKG from GP4
+            Console.WriteLine("    Running orbis-pub-cmd...");
+            RunCMD($"{programPath}\\GenGP4\\orbis-pub-cmd.exe", $"img_create --oformat pkg --tmp_path ./temp {game}-patch.gp4 ./temp");
 
             //Rename and move PKG after finished (make sure it exists and isn't full of blank bytes)
-            while (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length <= 0) { Thread.Sleep(1000); }
-            using (WaitForFile(outputPKG, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
+            while (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length <= 0) { }
             while (true)
             {
                 if (File.ReadAllBytes(outputPKG)[0] == 0x7F)
                     break;
             }
+
+            // Clean up temp folders and end processes
+            using (WaitForFile(outputPKG, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
+            if (File.Exists(outputPKG))
+            {
+                KillCMD();
+                Console.WriteLine($"  PKG Created successfully: {outputPKG}");
+            }
+            else
+                Console.WriteLine($"  PKG Creation failed. No PKG found at: {outputPKG}");
+        }
+
+        private static void KillCMD()
+        {
             foreach (Process proc in Process.GetProcessesByName("orbis-pub-cmd"))
                 proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("cmd"))
                 proc.Kill();
-            Console.WriteLine("  Renaming output PKG...");
-            File.Move(outputPKG, newOutputPKG);
-            Console.WriteLine("  Removing temp folder...");
-            Directory.Delete(Path.Combine($"{programPath}\\GenGP4", "ps4pub"), true);
         }
 
-        private static void CreateFolder(string path)
+        private static void Patch(string ebootPath, string combinationNamesList)
         {
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-            Directory.CreateDirectory(path);
-        }
+            string args = $"patch.py {Path.GetFileName(ebootPath)} --patch {combinationNamesList}";
+            Console.WriteLine($"  Patch Args:\n  {args}");
 
-        private static void Patch(string path, string combinationNamesList)
-        {
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.WorkingDirectory = path;
-            start.FileName = "cmd";
-            start.Arguments = $"/C python patch.py eboot.bin --patch {combinationNamesList}";
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = false;
-            start.CreateNoWindow = false;
-            using (Process process = Process.Start(start))
-            {
-                process.WaitForExit();
-            }
+            Process p = new Process();
+            p.StartInfo.FileName = python;
+            p.StartInfo.Arguments = args;
+            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(ebootPath);
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.Start();
+            p.WaitForExit();
         }
 
         private static void RunCMD(string filename, string args)
         {
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = "cmd";
-            start.WorkingDirectory = Path.GetDirectoryName(filename);
-            start.Arguments = $"/K {Path.GetFileName(filename)} {args}";
-            start.UseShellExecute = true;
-            start.RedirectStandardOutput = false;
-            //start.WindowStyle = ProcessWindowStyle.Hidden;
+            Console.WriteLine($"  PKG Builder Args:\n  {args}");
 
-            using (Process process = Process.Start(start))
-            {
-
-            }
+            Process p = new Process();
+            p.StartInfo.FileName = @"C:\Windows\system32\cmd.exe";
+            p.StartInfo.Arguments = $"{Path.GetFileName(filename)} {args}";
+            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(filename);
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = false;
+            p.StartInfo.RedirectStandardInput = false;
+            //p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            p.Start();
+            p.WaitForExit();
         }
 
         public static void CopyDir(string sourceFolder, string destFolder)
@@ -279,19 +275,6 @@ namespace PatchedPKGGen
             }
 
             return null;
-        }
-
-        private static void RemoveEmptyDirs(string dir)
-        {
-            foreach (var directory in Directory.GetDirectories(dir))
-            {
-                RemoveEmptyDirs(directory);
-                if (Directory.GetFiles(directory).Length == 0 &&
-                    Directory.GetDirectories(directory).Length == 0)
-                {
-                    Directory.Delete(directory, false);
-                }
-            }
         }
     }
 }
