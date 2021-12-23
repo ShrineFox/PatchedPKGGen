@@ -3,8 +3,13 @@
   <volume>
     <volume_type>pkg_ps4_patch</volume_type>
     <volume_id>PS4VOLUME</volume_id>
-    <volume_ts>2020-12-20 00:00:00</volume_ts>
-    <package content_id="UP0177-CUSA17416_00-PERSONA5R0000000" passcode="00000000000000000000000000000000" storage_type="digital25" app_type="full" app_path="G:\Persona\Backups\PS4\P5R\USA\UP0177-CUSA17416_00-PERSONA5R0000000-A0100-V0100.pkg"/>
+    <volume_ts>2021-04-01 00:00:00</volume_ts>
+    <package
+      content_id="UP0177-CUSA17416_00-PERSONA5R0000000"
+      passcode="00000000000000000000000000000000"
+      storage_type="digital25"
+      app_type="full"
+      app_path="G:\Persona\Backups\PS4\P5R\USA\UP0177-CUSA17416_00-PERSONA5R0000000-A0100-V0100.pkg"/>
     <chunk_info chunk_count="3" scenario_count="1">
       <chunks>
         <chunk id="0" label="Chunk #0"/>
@@ -27,19 +32,8 @@
     <file targ_path="sce_sys/npbind.dat" orig_path="CUSA17416-patch\sce_sys\npbind.dat"/>
     <file targ_path="sce_sys/nptitle.dat" orig_path="CUSA17416-patch\sce_sys\nptitle.dat"/>
     <file targ_path="sce_sys/param.sfo" orig_path="CUSA17416-patch\sce_sys\param.sfo"/>
-    <file targ_path="sce_sys/trophy/trophy00.trp" orig_path="CUSA17416-patch\sce_sys\trophy\trophy00.trp"/>
-    <file targ_path="sce_module/libc.prx" orig_path="CUSA17416-patch\sce_module\libc.prx"/>
-    <file targ_path="sce_module/libSceAudioLatencyEstimation.prx" orig_path="CUSA17416-patch\sce_module\libSceAudioLatencyEstimation.prx"/>
-    <file targ_path="sce_module/libSceFace.prx" orig_path="CUSA17416-patch\sce_module\libSceFace.prx"/>
-    <file targ_path="sce_module/libSceFaceTracker.prx" orig_path="CUSA17416-patch\sce_module\libSceFaceTracker.prx"/>
-    <file targ_path="sce_module/libSceFios2.prx" orig_path="CUSA17416-patch\sce_module\libSceFios2.prx"/>
-    <file targ_path="sce_module/libSceHand.prx" orig_path="CUSA17416-patch\sce_module\libSceHand.prx"/>
-    <file targ_path="sce_module/libSceHandTracker.prx" orig_path="CUSA17416-patch\sce_module\libSceHandTracker.prx"/>
-    <file targ_path="sce_module/libSceHeadTracker.prx" orig_path="CUSA17416-patch\sce_module\libSceHeadTracker.prx"/>
-    <file targ_path="sce_module/libSceJobManager.prx" orig_path="CUSA17416-patch\sce_module\libSceJobManager.prx"/>
-    <file targ_path="sce_module/libSceNpToolkit2.prx" orig_path="CUSA17416-patch\sce_module\libSceNpToolkit2.prx"/>
-    <file targ_path="sce_module/libSceS3DConversion.prx" orig_path="CUSA17416-patch\sce_module\libSceS3DConversion.prx"/>
     <file targ_path="eboot.bin" orig_path="CUSA17416-patch\eboot.bin"/>
+    <file targ_path="USRDIR/mod.cpk" orig_path="CUSA17416-patch\USRDIR\mod.cpk" pfs_compression="enable" chunks="0-2"/>
     <file targ_path="USRDIR/patch2R.cpk" orig_path="CUSA17416-patch\USRDIR\patch2R.cpk" pfs_compression="enable" chunks="0-2"/>
     <file targ_path="USRDIR/patch2R_F.cpk" orig_path="CUSA17416-patch\USRDIR\patch2R_F.cpk" pfs_compression="enable" chunks="0-2"/>
     <file targ_path="USRDIR/patch2R_G.cpk" orig_path="CUSA17416-patch\USRDIR\patch2R_G.cpk" pfs_compression="enable" chunks="0-2"/>
@@ -47,10 +41,8 @@
     <file targ_path="USRDIR/patch2R_S.cpk" orig_path="CUSA17416-patch\USRDIR\patch2R_S.cpk" pfs_compression="enable" chunks="0-2"/>
   </files>
   <rootdir>
-    <dir targ_name="sce_module"/>
     <dir targ_name="sce_sys">
       <dir targ_name="changeinfo"/>
-      <dir targ_name="trophy"/>
     </dir>
     <dir targ_name="USRDIR"/>
   </rootdir>

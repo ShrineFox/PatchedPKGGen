@@ -14,38 +14,75 @@ namespace PatchedPKGGen
     class Program
     {
         public static string python = @"C:\Users\Ryan\AppData\Local\Programs\Python\Python39\python.exe";
+        public static string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-        public static List<Tuple<string, string>> games = new List<Tuple<string, string>>()
+        public static List<Game> Games = new List<Game>()
         {
-            new Tuple<string,string>( "CUSA17416", "Persona 5 Royal USA" ),
-            new Tuple<string,string>( "CUSA17419", "Persona 5 Royal EU" ),
-            //new Tuple<string,string>( "CUSA06638", "Persona 5 (PS4) EU" )
+            //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa" },
+            //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17419", Region = "eur" },
+            new Game() { Name = "Persona 3 Dancing", ID = "p3d", TitleID = "CUSA12636", Region = "usa" },
+            new Game() { Name = "Persona 4 Dancing", ID = "p4d", TitleID = "CUSA12811", Region = "eur" },
+            new Game() { Name = "Persona 5 Dancing", ID = "p5d", TitleID = "CUSA12380", Region = "usa" }
         };
 
-        public static List<Tuple<string, string>> toggles = new List<Tuple<string, string>>()
+        public static List<Patch> P5RPatches = new List<Patch>()
         {
-            new Tuple<string,string>( "mod_support2", "Mod Support Alt by Lipsum" ),
-            new Tuple<string,string>( "intro_skip", "Intro Skip by Lipsum" ),
-            new Tuple<string,string>( "square", "Global Square Menu by Lipsum" ),
-            new Tuple<string,string>( "all_dlc", "Content Enabler by Lipsum" ),
-            new Tuple<string,string>( "no_trp", "Disable Trophies by Lipsum" ),
-            new Tuple<string,string>( "env", "ENV Tests< by Lipsum" ),
-            new Tuple<string,string>( "zzz", "Random Tests by Lipsum" ),
-            new Tuple<string,string>( "mod_support", "Mod Support by Lipsum" ),
+            new Patch() { ID = "mod_support", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
+                LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory." +
+                            "<br>Only useful if you're downloading the patched eboot.bin and creating the PKG yourself." },
+            new Patch() { ID = "mod_support2", Name = "Mod Support(Alt)", ShortDesc = "mod.cpk file replacement via FTP", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
+                LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file from <code>/data/p5r</code> on the PS4's internal memory via FTP.", Enabled = true },
+            new Patch() { ID = "0505", Name = "5.05 Backport", ShortDesc = "Run on firmware 5.05+", Image = "",
+                LongDesc = "Allows the game to run on the lowest possible moddable PS4 firmware, and all those above it.", Enabled = true },
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+                LongDesc = "Skips boot logos and intro movie (can still be viewed in Thieves Den).", Enabled = true },
+            new Patch() { ID = "all_dlc", Name = "Content Enabler", ShortDesc = "Enables on-disc content", Image = "",
+                LongDesc = "<b>This will make saves created with this patch incompatible</b> with the game when the patch is disabled!"},
+            new Patch() { ID = "dlc_msg", Name = "Skip DLC Messages", ShortDesc = "Skip DLC Messages on New Game", Image = "",
+                LongDesc = "Especially useful when using the Content Enabler patch together with a mod that skips the title screen and boots directly into a field.", Enabled = true },
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
+            new Patch() { ID = "square", Name = "Global Square Menu", ShortDesc = "Square button menu usable everywhere", Image = "",
+                LongDesc = "Enables the square menu globally (e.g. in Thieves Den and in Velvet Room or during events or game sections which disable it).", Enabled = true },
+            new Patch() { ID = "p5_save", Name = "P5 Save Bonus", ShortDesc = "Enables P5 save bonus without P5 saves present on system", Image = "", Enabled = true },
+            new Patch() { ID = "env", Name = "ENV Tests", ShortDesc = "Test same ENV on all fields", Image = "",
+                LongDesc = "Maps all <code>env/env*.ENV</code> files to <code>env/env0000_000_000.ENV</code>." +
+                "<br>Useful for testing custom/swapped ENV files on different fields without replacing them all manually." +
+                "<br><b>Crashes the game</b> if <code>env/env0000_000_000.ENV</code> is not present in <kbd>mod.cpk</kbd>."},
+            new Patch() { ID = "zzz", Name = "Random Tests", ShortDesc = "Only useful for very specific mod testing scenarios.", Image = "",
+                LongDesc = "Only useful for very specific mod testing scenarios." },
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", Enabled = true }
         };
-
-        public static List<Tuple<string, string>> togglesR = new List<Tuple<string, string>>()
+        public static List<Patch> P3DPatches = new List<Patch>()
         {
-            new Tuple<string,string>( "mod_support2", "Mod Support Alt by Lipsum" ),
-            new Tuple<string,string>( "intro_skip", "Intro Skip by Lipsum" ),
-            new Tuple<string,string>( "0505", "PS4 FW 5.05 Backport by Lipsum" ),
-            new Tuple<string,string>( "square", "Global Square Menu by Lipsum" ),
-            new Tuple<string,string>( "all_dlc", "Content Enabler by Lipsum" ),
-            new Tuple<string,string>( "no_trp", "Disable Trophies by Lipsum" ),
-            new Tuple<string,string>( "p5_save", "P5 Save Bonus Enabler by Lipsum" ),
-            new Tuple<string,string>( "env", "ENV Tests< by Lipsum" ),
-            new Tuple<string,string>( "zzz", "Random Tests by Lipsum" ),
-            new Tuple<string,string>( "mod_support", "Mod Support by Lipsum" ),
+            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
+                LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
+                           $"<br>or placed in <code>/data/p3d</code> on the PS4's internal memory via FTP." +
+                            "<br>The latter takes priority.", Enabled = true },
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+                LongDesc = "Skips boot logos and intro movie.", Enabled = true },
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", Enabled = true }
+        };
+        public static List<Patch> P4DPatches = new List<Patch>()
+        {
+            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
+                LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
+                           $"<br>or placed in <code>/data/p4d</code> on the PS4's internal memory via FTP." +
+                            "<br>The latter takes priority.", Enabled = true },
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+                LongDesc = "Skips boot logos and intro movie.", Enabled = true },
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
+        };
+        public static List<Patch> P5DPatches = new List<Patch>()
+        {
+            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
+                LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
+                           $"<br>or placed in <code>/data/p5d</code> on the PS4's internal memory via FTP." +
+                            "<br>The latter takes priority.", Enabled = true },
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+                LongDesc = "Skips boot logos and intro movie.", Enabled = true },
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", Enabled = true }
         };
 
         public static IEnumerable<T[]> Permutations<T>(IEnumerable<T> source)
@@ -64,48 +101,62 @@ namespace PatchedPKGGen
 
         static void Main(string[] args)
         {
-            foreach (var game in games)
+            // Get all P5(R) combos where both mod_support types aren't present at the same time
+            // doing this ahead of time so we only have to calculate this once
+            var P5RPatchCombos = Permutations(P5RPatches).Where(x => x.Count() > 0 && !(x.Any(z => z.ID.Equals("mod_support")) && x.Any(z => z.ID.Equals("mod_support2"))));
+            
+            // Generate PKG and EBOOT.BIN combos for each combination of patches
+            foreach (var game in Games)
             {
-                if (game.Item1 == "CUSA06638")
-                    CreatePatches(game.Item1, toggles);
-                else
-                    CreatePatches(game.Item1, togglesR);
+                switch(game.ID)
+                {
+                    case "p5r":
+                        CreatePatches(game, P5RPatchCombos);
+                        break;
+                    case "p3d":
+                        CreatePatches(game, Permutations(P3DPatches));
+                        break;
+                    case "p4d":
+                        CreatePatches(game, Permutations(P4DPatches));
+                        break;
+                    case "p5d":
+                        CreatePatches(game, Permutations(P5DPatches));
+                        break;
+                }
             }
         }
 
-        private static void CreatePatches(string game, List<Tuple<string, string>> patches)
+        private static void CreatePatches(Game game, IEnumerable<Patch[]> combinations)
         {
-            string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string gamePath = Path.Combine(Path.Combine(Environment.CurrentDirectory, "ppp"), game);
-            
-            // Remove previous folder contents
+            // Paths specific to this operation
+            string gamePath = Path.Combine(Path.Combine(Path.Combine(Environment.CurrentDirectory, "ppp"), game.ID), game.TitleID);
+            string inputEbootPath = Path.Combine(programPath, $"{game}.bin");
+            string patchedEbootPath = Path.Combine(programPath, $"{game}.bin--patched.bin");
+
+            // Remove previous folder contents and recreate gamePath
             if (Directory.Exists(gamePath))
                 Directory.Delete(gamePath, true);
-            Console.WriteLine($"Created Empty Game Folder: {gamePath}");
+            Directory.CreateDirectory(gamePath);
+            Console.WriteLine($"\n\nCleared and Recreated Game Folder: {gamePath}");
 
-            // Iterate through all combos where both mod_support types aren't present at the same time
-            var combinations = Permutations(patches).Where(x => x.Count() > 0 && !(x.Any(z => z.Item1.Equals("mod_support")) && x.Any(z => z.Item1.Equals("mod_support2"))));
-            List<Tuple<string, string>[]> combinationCheck = combinations.ToList();
-            int i = 1;
+            // For tracking progress
+            int i = 1; 
             int total = combinations.Count();
+
+            // For each combination, patch EBOOT, copy to folder and rename, & generate new PKG
             foreach (var combination in combinations)
             {
-                List<string> combinationNames = new List<string>(); // New list of patches in combo
-                string comboPath = gamePath; // New folder for combos to go in
-
+                List<string> combinationNames = new List<string>(); // List of each patch name in combo
+                string comboPath = gamePath; // New folder for combo results to go in
                 foreach (var patch in combination)
                 {
-                    // Create folder for each patch and save name to args list...
-                    combinationNames.Add(patch.Item1);
-                    comboPath = Path.Combine(comboPath, patch.Item1);
-                    Directory.CreateDirectory(comboPath);
+                    // Create path for each patch combination and save name to args list...
+                    combinationNames.Add(patch.ID);
+                    comboPath = Path.Combine(comboPath, patch.ID);
                 }
 
                 Console.WriteLine($"Patching {game} EBOOT with {String.Join(", ", combinationNames)} " +
-                    $"({i}/{combinations.Count()})...");
-
-                string inputEbootPath = Path.Combine(programPath, $"{game}.bin");
-                string patchedEbootPath = Path.Combine(programPath, $"{game}.bin--patched.bin");
+                    $"\n({i}/{combinations.Count()})...");
 
                 // If input EBOOT exists...
                 using (WaitForFile(inputEbootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
@@ -117,50 +168,58 @@ namespace PatchedPKGGen
                     // If Patched EBOOT exists...
                     using (WaitForFile(patchedEbootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
                     if (File.Exists(patchedEbootPath))
-                    {
-                        CreatePKG(game, patchedEbootPath, String.Join(", ", combinationNames));
-                    }
+                        CreatePKG(game.TitleID, patchedEbootPath, String.Join(", ", combinationNames), comboPath);
                     else
-                        Console.WriteLine($"  EBOOT Patch failed. No patched EBOOT found at {patchedEbootPath}");
+                        Console.WriteLine($"  EBOOT Patch failed. No patched EBOOT found at: {patchedEbootPath}");
                 }
                 else
-                    Console.WriteLine($"  EBOOT Patch failed. Could not find input EBOOT at {inputEbootPath}");
+                    Console.WriteLine($"  EBOOT Patch failed. Could not find input EBOOT at: {inputEbootPath}");
                 
                 i++;
             }
-            Console.WriteLine($"Done");
-            Console.ReadKey();
+            Console.WriteLine($"\nDone Generating Pre-Patched Output for {game.TitleID} ({game.Name}, {game.Region})!");
         }
 
-        private static void CreatePKG(string game, string ebootPath, string description)
+        private static void CreatePKG(string game, string ebootPath, string description, string comboPath)
         {
-            // Overwrite EBOOT in PKG with patched one
+            string newEbootPath = Path.Combine(Path.Combine(Path.Combine(programPath, "GenGP4"), $"{game}-patch"), "eboot.bin");
+
+            // Double-check that previous PKG generation or EBOOT patching isn't still running
             KillCMD();
-            string programPath = Path.GetDirectoryName(ebootPath);
-            string newEbootPath = Path.Combine(Path.Combine(Path.Combine(programPath,"GenGP4"), $"{game}-patch"), "eboot.bin");
+
+            // Overwrite EBOOT in PKG with patched one
             File.Copy(ebootPath, newEbootPath, true);
-            Console.WriteLine($"  Overwrote PKG EBOOT with patched one.\n" +
-                $"  Creating Update PKG...");
+            Console.WriteLine($"  Overwrote PKG EBOOT with patched one." +
+                $"\n  Creating Update PKG...");
             
-            string outputPKG = "";
+            string outputPKG = ""; // Path where we expect output PKG to be generated
             switch (game) 
             {
-                case "CUSA17416":
+                case "CUSA17416": // P5R (USA)
                     outputPKG = Path.Combine(programPath, $"UP0177-CUSA17416_00-PERSONA5R0000000-A0101-V0100.pkg");
                     break;
-                case "CUSA17419":
+                case "CUSA17419": // P5R (EUR)
                     outputPKG = Path.Combine(programPath, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0100.pkg");
                     break;
-                case "CUSA06638":
+                case "CUSA06638": // P5 PS4 (EUR)
                     outputPKG = Path.Combine(programPath, $"EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg");
                     break;
+                case "CUSA12636": // P3D (USA)
+                    outputPKG = Path.Combine(programPath, $"UP2611-CUSA12636_00-PERSONA3DUS00000-A0101-V0100.pkg");
+                    break;
+                case "CUSA12811": // P4D (EUR)
+                    outputPKG = Path.Combine(programPath, $"EP2475-CUSA12811_00-PERSONA4DEU00000-A0101-V0100.pkg");
+                    break;
+                case "CUSA12380": // P5D (USA)
+                    outputPKG = Path.Combine(programPath, $"UP2611-CUSA12380_00-PERSONA5DUS00000-A0101-V0100.pkg");
+                    break;
             }
+
             string temp = Path.Combine(Path.Combine(programPath, "GenGP4"), "temp"); // Temp PKG Builder Folder
-            // Delete existing output PKG and Temp folder
-            if (File.Exists(outputPKG))
-                File.Delete(outputPKG);
+            // Delete existing Temp folder and recreate it
             if (Directory.Exists(temp))
                 Directory.Delete(temp, true);
+            Directory.CreateDirectory(temp);
 
             // Update PKG description
             Console.WriteLine("    Updating PKG description...");
@@ -170,7 +229,7 @@ namespace PatchedPKGGen
             Console.WriteLine("    Running orbis-pub-cmd...");
             RunCMD($"{programPath}\\GenGP4\\orbis-pub-cmd.exe", $"img_create --oformat pkg --tmp_path ./temp {game}-patch.gp4 ./temp");
 
-            //Rename and move PKG after finished (make sure it exists and isn't full of blank bytes)
+            // Rename and move PKG after finished (make sure it exists and isn't full of blank bytes)
             while (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length <= 0) { }
             while (true)
             {
@@ -178,12 +237,17 @@ namespace PatchedPKGGen
                     break;
             }
 
-            // Clean up temp folders and end processes
+            // Clean up temp folders and end any lingering PKG creation/EBOOT patching processes
             using (WaitForFile(outputPKG, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
             if (File.Exists(outputPKG))
             {
                 KillCMD();
                 Console.WriteLine($"  PKG Created successfully: {outputPKG}");
+                // Copy PKG and EBOOT to permutation folder
+                Directory.CreateDirectory(comboPath);
+                File.Copy(outputPKG, Path.Combine(comboPath, Path.GetFileName(outputPKG)));
+                File.Copy(newEbootPath, Path.Combine(comboPath, "eboot.bin"));
+                Console.WriteLine($"    Copied Patched PKG and EBOOT to: {comboPath}");
             }
             else
                 Console.WriteLine($"  PKG Creation failed. No PKG found at: {outputPKG}");
@@ -276,5 +340,23 @@ namespace PatchedPKGGen
 
             return null;
         }
+    }
+
+    public class Game
+    {
+        public string Name { get; set; } = "";
+        public string ID { get; set; } = "";
+        public string TitleID { get; set; } = "";
+        public string Region { get; set; } = "";
+    }
+
+    public class Patch
+    {
+        public string Name { get; set; } = "";
+        public string ID { get; set; } = "";
+        public string ShortDesc { get; set; } = "";
+        public string LongDesc { get; set; } = "";
+        public string Image { get; set; } = "";
+        public bool Enabled { get; set; } = false;
     }
 }
