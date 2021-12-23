@@ -13,7 +13,7 @@ namespace PatchedPKGGen
 {
     class Program
     {
-        public static string python = @"C:\Users\Ryan\AppData\Local\Programs\Python\Python39\python.exe";
+        public static string python = @"C:\Users\Ryan\AppData\Local\Programs\Python\Python310\python.exe";
         public static string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         public static List<Game> Games = new List<Game>()
@@ -130,8 +130,8 @@ namespace PatchedPKGGen
         {
             // Paths specific to this operation
             string gamePath = Path.Combine(Path.Combine(Path.Combine(Environment.CurrentDirectory, "ppp"), game.ID), game.TitleID);
-            string inputEbootPath = Path.Combine(programPath, $"{game}.bin");
-            string patchedEbootPath = Path.Combine(programPath, $"{game}.bin--patched.bin");
+            string inputEbootPath = Path.Combine(programPath, $"{game.TitleID}.bin");
+            string patchedEbootPath = Path.Combine(programPath, $"{game.TitleID}.bin--patched.bin");
 
             // Remove previous folder contents and recreate gamePath
             if (Directory.Exists(gamePath))
