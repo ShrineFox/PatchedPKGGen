@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -231,7 +233,8 @@ namespace PatchedPKGGen
 
             // Overwrite EBOOT in PKG with patched one
             using (WaitForFile(ebootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
-
+            if (File.Exists(newEbootPath))
+                using (WaitForFile(newEbootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
             File.Copy(ebootPath, newEbootPath, true);
             Console.WriteLine($"  Overwrote PKG EBOOT with patched one." +
                 $"\n  Creating Update PKG...");
@@ -241,10 +244,10 @@ namespace PatchedPKGGen
             switch (titleID) 
             {
                 case "CUSA17416": // P5R (USA)
-                    outputPKG = Path.Combine(temp, "UP0177-CUSA17416_00-PERSONA5R0000000-A0101-V0100.pkg");
+                    outputPKG = Path.Combine(temp, "UP0177-CUSA17416_00-PERSONA5R0000000-A0102-V0100.pkg");
                     break;
                 case "CUSA17419": // P5R (EUR)
-                    outputPKG = Path.Combine(temp, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0100.pkg");
+                    outputPKG = Path.Combine(temp, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0102-V0100.pkg");
                     break;
                 case "CUSA06638": // P5 PS4 (EUR)
                     outputPKG = Path.Combine(temp, $"EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg");
@@ -271,7 +274,7 @@ namespace PatchedPKGGen
 
             // Create PKG from GP4
             Console.WriteLine("    Running orbis-pub-cmd...");
-            Build($"{programPath}\\GenGP4\\orbis-pub-cmd.exe", $"img_create --oformat pkg --tmp_path ./temp {titleID}-patch.gp4 ./temp", outputPKG);
+            Build($"img_create --oformat pkg --tmp_path ./temp {titleID}-patch.gp4 ./temp", outputPKG);
 
             // Clean up temp folders and end any lingering PKG creation/EBOOT patching processes
             if (File.Exists(outputPKG))
@@ -290,10 +293,14 @@ namespace PatchedPKGGen
 
         private static void KillCMD()
         {
-            foreach (Process proc in Process.GetProcessesByName("orbis-pub-cmd"))
-                proc.Kill();
-            foreach (Process proc in Process.GetProcessesByName("cmd"))
-                proc.Kill();
+            try
+            {
+                foreach (Process proc in Process.GetProcessesByName("orbis-pub-cmd"))
+                    proc.Kill();
+                foreach (Process proc in Process.GetProcessesByName("cmd"))
+                    proc.Kill();
+            }
+            catch { }
         }
 
         private static void Patch(string ebootPath, string combinationNamesList)
@@ -313,18 +320,19 @@ namespace PatchedPKGGen
             p.WaitForExit();
         }
 
-        private static void Build(string filename, string args, string outputPKG)
+        private static void Build(string args, string outputPKG)
         {
+            string pkgBuilder = $"{programPath}\\GenGP4\\orbis-pub-cmd.exe";
             Console.WriteLine($"  PKG Builder Args:\n  {args}");
 
             Process p = new Process();
-            p.StartInfo.FileName = filename;
+            p.StartInfo.FileName = pkgBuilder;
             p.StartInfo.Arguments = args;
-            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(filename);
-            p.StartInfo.UseShellExecute = true;
-            p.StartInfo.RedirectStandardOutput = false;
-            p.StartInfo.RedirectStandardInput = false;
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            p.StartInfo.WorkingDirectory = Path.GetDirectoryName(pkgBuilder);
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.Start();
 
             // Rename and move PKG after finished (make sure it exists and isn't full of blank bytes)
@@ -349,6 +357,7 @@ namespace PatchedPKGGen
                 }
             }
             p.Close();
+            KillCMD();
         }
 
         public static void CopyDir(string sourceFolder, string destFolder)
