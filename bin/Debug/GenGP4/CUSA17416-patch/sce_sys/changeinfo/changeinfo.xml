@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <changeinfo>
-  <changes app_ver="01.02">
-    <![CDATA[
-• Made minor text adjustments.
-    ]]>
-  </changes>
   <changes app_ver="01.01">
     <![CDATA[
-• Made minor text adjustments.
-• Updated tutorial content for clarity.
+Patched using ShrineFox.com/UpdateCreator
+(based on zarroboogs's ppp):
+
+0505
+intro_skip
+p5_save
+share_button
+square
+mod2_efigs
     ]]>
   </changes>
 </changeinfo>

@@ -13,61 +13,89 @@ namespace PatchedPKGGen
 {
     class Program
     {
-        public static string python = @"C:\Users\Ryan\AppData\Local\Programs\Python\Python310\python.exe";
+        public static string python = @"C:\Python38\python.exe";
         public static string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         public static List<Game> Games = new List<Game>()
         {
-            //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa" },
+            new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa" },
             //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17419", Region = "eur" },
-            new Game() { Name = "Persona 3 Dancing", ID = "p3d", TitleID = "CUSA12636", Region = "usa" },
-            new Game() { Name = "Persona 4 Dancing", ID = "p4d", TitleID = "CUSA12811", Region = "eur" },
-            new Game() { Name = "Persona 5 Dancing", ID = "p5d", TitleID = "CUSA12380", Region = "usa" }
+            //new Game() { Name = "Persona 3 Dancing", ID = "p3d", TitleID = "CUSA12636", Region = "usa" },
+            //new Game() { Name = "Persona 4 Dancing", ID = "p4d", TitleID = "CUSA12811", Region = "eur" },
+            //new Game() { Name = "Persona 5 Dancing", ID = "p5d", TitleID = "CUSA12380", Region = "usa" }
         };
+
+        //  0505           PS4 FW 5.05 Backport
+        //  all_dlc        Content Enabler
+        //  dlc_msg        Skip DLC Unlock Messages
+        //  intro_skip     Intro Skip
+        //  mod            Mod Support (PKG)
+        //  mod_efigs      Mod Support EFIGS (PKG)
+        //  mod2           Mod Support (FTP)
+        //  mod2_efigs     Mod Support EFIGS (FTP)
+        //  mod3           Mod Support (FTP HostFS)
+        //  mod3_efigs     Mod Support EFIGS (FTP HostFS)
+        //  no_trp         Disable Trophies
+        //  p5_save        P5 Save Bonus Enabler
+        //  share_button   Enable Share Button
+        //  square         Global Square Menu
+        //  bgm_ord        Sequential Battle BGM
+        //  bgm_rnd        Randomized Battle BGM
 
         public static List<Patch> P5RPatches = new List<Patch>()
         {
-            new Patch() { ID = "mod_support2", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via FTP", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
-                LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file from <code>/data/p5r</code> on the PS4's internal memory via FTP.", Enabled = true },
+            // Required Patches
             new Patch() { ID = "0505", Name = "5.05 Backport", ShortDesc = "Run on firmware 5.05+", Image = "",
-                LongDesc = "Allows the game to run on the lowest possible moddable PS4 firmware, and all those above it.", Enabled = true },
+                LongDesc = "Allows the game to run on the lowest possible moddable PS4 firmware, and all those above it." , AlwaysOn = true },
             new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
-                LongDesc = "Skips boot logos and intro movie (can still be viewed in Thieves Den).", Enabled = true },
+                LongDesc = "Skips boot logos and intro movie (can still be viewed in Thieves Den)." , AlwaysOn = true },
+            new Patch() { ID = "p5_save", Name = "P5 Save Bonus", ShortDesc = "Enables P5 save bonus without P5 saves present on system", Image = "" , AlwaysOn = true },
+            new Patch() { ID = "share_button", Name = "Enable Share Button", ShortDesc = "Enables video recording and screenshots using share button", Image = "", AlwaysOn = true },
+            new Patch() { ID = "square", Name = "Global Square Menu", ShortDesc = "Square button menu usable everywhere", Image = "",
+                LongDesc = "Enables the square menu globally (e.g. in Thieves Den and in Velvet Room or during events or game sections which disable it).", AlwaysOn = true },
+            // Mod Loader Patches (at least one is required)
+            new Patch() { ID = "mod2_efigs", Name = "FTP Mod Support (EFIGS)", ShortDesc = "m.cpk file replacement via FTP with optional language support", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
+                LongDesc = "Loads modded files from a <kbd>m.cpk</kbd> file in <code>/data/p5r</code> on the PS4's internal memory via FTP.<br>Optional language-specific .cpk files take priority when the system language isn't English (i.e. mF.cpk for French, mG.cpk for German etc.)" },
+            new Patch() { ID = "mod3_efigs", Name = "FTP HostFS Mod Support (EFIGS)", ShortDesc = "Loose file replacement via system language dependent directories", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
+                LongDesc = "<b>EXPERIMENTAL</b> - this patch uses a debug function and might be unstable. Loads from loose files placed on the PS4's internal memory via FTP." +
+                "<br><code>/data/p5r/bind/</code> (English, always loaded - language specific directories below have a higher priority)" +
+                "<br><code>/data/p5r/bindF/</code> (French)" +
+                "<br><code>/data/p5r/bindI/</code> (Italian)" +
+                "<br><code>/data/p5r/bindG/</code> (German)" +
+                "<br><code>/data/p5r/bindS/</code> (Spanish)" },
+            // Optional Patches (all_dlc always includes dlc_msg)
             new Patch() { ID = "all_dlc", Name = "Content Enabler", ShortDesc = "Enables on-disc content", Image = "",
                 LongDesc = "<b>This will make saves created with this patch incompatible</b> with the game when the patch is disabled!"},
             new Patch() { ID = "dlc_msg", Name = "Skip DLC Messages", ShortDesc = "Skip DLC Messages on New Game", Image = "",
-                LongDesc = "Especially useful when using the Content Enabler patch together with a mod that skips the title screen and boots directly into a field.", Enabled = true },
+                LongDesc = "Especially useful when using the Content Enabler patch together with a mod that skips the title screen and boots directly into a field." },
+            // Optional Patches (bgm_ord or bgm_rnd can only be enabled separate from eachother)
+            new Patch() { ID = "bgm_ord", Name = "Sequential Battle BGM", ShortDesc = "Plays different BGM track for each battle", Image = "",
+                LongDesc = "A different battle BGM track plays (in order) each time you encounter an enemy, regardless of equipped MC outfit." },
+            new Patch() { ID = "bgm_rnd", Name = "Randomized Battle BGM", ShortDesc = "Plays randomly selected BGM track for each battle", Image = "",
+                LongDesc = "A different (random) battle BGM track plays each time you encounter an enemy, regardless of equipped MC outfit." },
+            // Optional Patch
             new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
-            new Patch() { ID = "square", Name = "Global Square Menu", ShortDesc = "Square button menu usable everywhere", Image = "",
-                LongDesc = "Enables the square menu globally (e.g. in Thieves Den and in Velvet Room or during events or game sections which disable it).", Enabled = true },
-            new Patch() { ID = "p5_save", Name = "P5 Save Bonus", ShortDesc = "Enables P5 save bonus without P5 saves present on system", Image = "", Enabled = true },
-            new Patch() { ID = "env", Name = "ENV Tests", ShortDesc = "Test same ENV on all fields", Image = "",
-                LongDesc = "Maps all <code>env/env*.ENV</code> files to <code>env/env0000_000_000.ENV</code>." +
-                "<br>Useful for testing custom/swapped ENV files on different fields without replacing them all manually." +
-                "<br><b>Crashes the game</b> if <code>env/env0000_000_000.ENV</code> is not present in <kbd>mod.cpk</kbd>."},
-            new Patch() { ID = "zzz", Name = "Random Tests", ShortDesc = "Only useful for very specific mod testing scenarios.", Image = "",
-                LongDesc = "Only useful for very specific mod testing scenarios." },
-            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", Enabled = true }
         };
+
         public static List<Patch> P3DPatches = new List<Patch>()
         {
             new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
                 LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
                            $"<br>or placed in <code>/data/p3d</code> on the PS4's internal memory via FTP." +
-                            "<br>The latter takes priority.", Enabled = true },
+                            "<br>The latter takes priority.", AlwaysOn = true },
             new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
-                LongDesc = "Skips boot logos and intro movie.", Enabled = true },
+                LongDesc = "Skips boot logos and intro movie.", AlwaysOn = true },
             new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
-            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", Enabled = true }
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", AlwaysOn = true }
         };
         public static List<Patch> P4DPatches = new List<Patch>()
         {
             new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
                 LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
                            $"<br>or placed in <code>/data/p4d</code> on the PS4's internal memory via FTP." +
-                            "<br>The latter takes priority.", Enabled = true },
+                            "<br>The latter takes priority.", AlwaysOn = true },
             new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
-                LongDesc = "Skips boot logos and intro movie.", Enabled = true },
+                LongDesc = "Skips boot logos and intro movie.", AlwaysOn = true },
             new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
         };
         public static List<Patch> P5DPatches = new List<Patch>()
@@ -75,11 +103,11 @@ namespace PatchedPKGGen
             new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
                 LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
                            $"<br>or placed in <code>/data/p5d</code> on the PS4's internal memory via FTP." +
-                            "<br>The latter takes priority.", Enabled = true },
+                            "<br>The latter takes priority.", AlwaysOn = true },
             new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
-                LongDesc = "Skips boot logos and intro movie.", Enabled = true },
+                LongDesc = "Skips boot logos and intro movie.", AlwaysOn = true },
             new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
-            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", Enabled = true }
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", AlwaysOn = true }
         };
 
         public static IEnumerable<T[]> Permutations<T>(IEnumerable<T> source)
@@ -98,9 +126,21 @@ namespace PatchedPKGGen
 
         static void Main(string[] args)
         {
-            // Get all P5(R) combos where both mod_support types aren't present at the same time
-            // doing this ahead of time so we only have to calculate this once
-            var P5RPatchCombos = Permutations(P5RPatches).Where(x => x.Count() > 0 && !(x.Any(z => z.ID.Equals("mod_support")) && x.Any(z => z.ID.Equals("mod_support2"))));
+            // Get all desired P5(R) combos ahead of time so we only have to calculate this once
+            var P5RPatchCombos = Permutations(P5RPatches).Where(x => x.Count() > 0).ToList();
+            P5RPatchCombos = P5RPatchCombos.Where(x =>
+                // Make AlwaysOn options required as part of a permutation
+                x.Where(z => z.AlwaysOn.Equals(true)).Count().Equals(P5RPatches.Where(y => y.AlwaysOn.Equals(true)).Count())
+                // Require either mod2_efigs or mod3_efigs for mod support
+                && x.Any(z => z.ID.Equals("mod2_efigs") || z.ID.Equals("mod3_efigs"))
+                // Make sure both mod support types aren't present at the same time
+                && !(x.Any(z => z.ID.Equals("mod2_efigs")) && x.Any(z => z.ID.Equals("mod3_efigs")))
+                // Make sure both bgm shuffle types aren't present at the same time
+                && !(x.Any(z => z.ID.Equals("bgm_ord")) && x.Any(z => z.ID.Equals("bgm_rnd")))
+                // Make all_dlc include dlc_msg
+                && !((x.Any(z => z.ID.Equals("all_dlc")) && !x.Any(z => z.ID.Equals("dlc_msg"))) 
+                    || (x.Any(z => z.ID.Equals("dlc_msg")) && !x.Any(z => z.ID.Equals("all_dlc"))))
+            ).ToList();
             
             // Generate PKG and EBOOT.BIN combos for each combination of patches
             foreach (var game in Games)
@@ -190,6 +230,8 @@ namespace PatchedPKGGen
             KillCMD();
 
             // Overwrite EBOOT in PKG with patched one
+            using (WaitForFile(ebootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
+
             File.Copy(ebootPath, newEbootPath, true);
             Console.WriteLine($"  Overwrote PKG EBOOT with patched one." +
                 $"\n  Creating Update PKG...");
@@ -372,6 +414,6 @@ namespace PatchedPKGGen
         public string ShortDesc { get; set; } = "";
         public string LongDesc { get; set; } = "";
         public string Image { get; set; } = "";
-        public bool Enabled { get; set; } = false;
+        public bool AlwaysOn { get; set; } = false;
     }
 }

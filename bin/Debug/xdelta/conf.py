@@ -1,6 +1,14 @@
 
 games = [
     {
+        'name': 'Persona 5 (PS4) US v1.00',
+        'title': 'CUSA05877',
+        'version': '0100',
+        'check': [
+            { 'offset': 0x10CAE67, 'value': b'CUSA05877' },
+        ],
+    },
+    {
         'name': 'Persona 5 (PS4) EU v1.00',
         'title': 'CUSA06638',
         'version': '0100',
@@ -52,6 +60,57 @@ games = [
 
 patches = [
     {
+        'path': 'CUSA05877_0100/intro_skip.xdelta',
+        'id': 'intro_skip',
+        'name': 'Intro Skip',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/mod_support.xdelta',
+        'id': 'mod_support',
+        'name': 'Mod Support',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/mod_support2.xdelta',
+        'id': 'mod_support2',
+        'name': 'Mod Support Alt',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/no_trp.xdelta',
+        'id': 'no_trp',
+        'name': 'Disable Trophies',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/share_button.xdelta',
+        'id': 'share_button',
+        'name': 'Enable Share Button',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/square.xdelta',
+        'id': 'square',
+        'name': 'Global Square Menu',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/env.xdelta',
+        'id': 'env',
+        'name': 'ENV Test',
+        'games': { 'CUSA05877' : '0100' },
+    },
+    {
+        'path': 'CUSA05877_0100/zzz.xdelta',
+        'id': 'zzz',
+        'name': 'Random Tests',
+        'games': { 'CUSA05877' : '0100' },
+    },
+
+
+
+    {
         'path': 'CUSA06638_0100/all_dlc.xdelta',
         'id': 'all_dlc',
         'name': 'Content Enabler',
@@ -82,6 +141,12 @@ patches = [
         'games': { 'CUSA06638' : '0100' },
     },
     {
+        'path': 'CUSA06638_0100/share_button.xdelta',
+        'id': 'share_button',
+        'name': 'Enable Share Button',
+        'games': { 'CUSA06638' : '0100' },
+    },
+    {
         'path': 'CUSA06638_0100/square.xdelta',
         'id': 'square',
         'name': 'Global Square Menu',
@@ -99,15 +164,9 @@ patches = [
         'name': 'Random Tests',
         'games': { 'CUSA06638' : '0100' },
     },
-    
-    
-    
-    {
-        'path': 'CUSA17416_0102/60fps.xdelta',
-        'id': '60fps',
-        'name': '60 FPS Toggle',
-        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
-    },
+
+
+
     {
         'path': 'CUSA17416_0102/0505.xdelta',
         'id': '0505',
@@ -133,15 +192,39 @@ patches = [
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
     },
     {
-        'path': 'CUSA17416_0102/mod_support.xdelta',
-        'id': 'mod_support',
-        'name': 'Mod Support',
+        'path': 'CUSA17416_0102/mod.xdelta',
+        'id': 'mod',
+        'name': 'Mod Support (PKG)',
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
     },
     {
-        'path': 'CUSA17416_0102/mod_support2.xdelta',
-        'id': 'mod_support2',
-        'name': 'Mod Support Alt',
+        'path': 'CUSA17416_0102/mod_efigs.xdelta',
+        'id': 'mod_efigs',
+        'name': 'Mod Support EFIGS (PKG)',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
+        'path': 'CUSA17416_0102/mod2.xdelta',
+        'id': 'mod2',
+        'name': 'Mod Support (FTP)',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
+        'path': 'CUSA17416_0102/mod2_efigs.xdelta',
+        'id': 'mod2_efigs',
+        'name': 'Mod Support EFIGS (FTP)',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
+        'path': 'CUSA17416_0102/mod3.xdelta',
+        'id': 'mod3',
+        'name': 'Mod Support (FTP HostFS)',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
+        'path': 'CUSA17416_0102/mod3_efigs.xdelta',
+        'id': 'mod3_efigs',
+        'name': 'Mod Support EFIGS (FTP HostFS)',
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
     },
     {
@@ -157,9 +240,27 @@ patches = [
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
     },
     {
+        'path': 'CUSA17416_0102/share_button.xdelta',
+        'id': 'share_button',
+        'name': 'Enable Share Button',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
         'path': 'CUSA17416_0102/square.xdelta',
         'id': 'square',
         'name': 'Global Square Menu',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
+        'path': 'CUSA17416_0102/bgm_ord.xdelta',
+        'id': 'bgm_ord',
+        'name': 'Sequential Battle BGM',
+        'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+    },
+    {
+        'path': 'CUSA17416_0102/bgm_rnd.xdelta',
+        'id': 'bgm_rnd',
+        'name': 'Randomized Battle BGM',
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
     },
     {
@@ -167,16 +268,18 @@ patches = [
         'id': 'env',
         'name': 'ENV Test',
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+        'display' : False,
     },
     {
         'path': 'CUSA17416_0102/zzz.xdelta',
         'id': 'zzz',
         'name': 'Random Tests',
         'games' : { 'CUSA17416' : '0102', 'CUSA17419' : '0102' },
+        'display' : False,
     },
-    
-    
-    
+
+
+
     {
         'path': 'CUSA12380_0100/intro_skip.xdelta',
         'id': 'intro_skip',
@@ -201,9 +304,16 @@ patches = [
         'name': 'Disable Screenshot Overlay',
         'games' : { 'CUSA12380' : '0100' },
     },
-    
-    
-    
+    {
+        'path': 'CUSA12380_0100/psvc.xdelta',
+        'id': 'psvc',
+        'name': 'PSV Content Compat.',
+        'games' : { 'CUSA12380' : '0100' },
+        'display' : False,
+    },
+
+
+
     {
         'path': 'CUSA12636_0100/intro_skip.xdelta',
         'id': 'intro_skip',
@@ -228,9 +338,16 @@ patches = [
         'name': 'Disable Screenshot Overlay',
         'games' : { 'CUSA12636' : '0100' },
     },
-    
-    
-    
+    {
+        'path': 'CUSA12636_0100/psvc.xdelta',
+        'id': 'psvc',
+        'name': 'PSV Content Compat.',
+        'games' : { 'CUSA12636' : '0100' },
+        'display' : False,
+    },
+
+
+
     {
         'path': 'CUSA12811_0100/intro_skip.xdelta',
         'id': 'intro_skip',
