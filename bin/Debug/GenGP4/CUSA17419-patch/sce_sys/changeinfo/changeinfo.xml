@@ -2,15 +2,19 @@
 <changeinfo>
   <changes app_ver="01.01">
     <![CDATA[
-P3FES Font Mod v1.0 by Alan3D
-Royal Mod Menu v1.1 by Shrinefox, TGE, RayFirefist, Tekka
-Title Screen Skip v1.0 by ShrineFox
-Better 000_100 Dummy Field v1.0 by DniweTamp
-Colorful Battle UI - Royal Edition v1.0 by HaythamQuake
-Colorful Cutins Royal v1.0 by Nick
-Colorful Title Screen Models - Royal Edition v1.0 by HaythamQuake
-E.P.I.C -Royal Edition- v1.0 by Century_
+Patched using ShrineFox.com/UpdateCreator
+(based on zarroboogs's ppp):
 
+0505
+intro_skip
+p5_save
+share_button
+square
+mod3_efigs
+all_dlc
+dlc_msg
+bgm_rnd
+no_trp
     ]]>
   </changes>
 </changeinfo>

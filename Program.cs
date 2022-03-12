@@ -15,13 +15,13 @@ namespace PatchedPKGGen
 {
     class Program
     {
-        public static string python = @"C:\Python38\python.exe";
+        public static string python = @"C:\Users\Ryan\AppData\Local\Programs\Python\Python310\python.exe";
         public static string programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         public static List<Game> Games = new List<Game>()
         {
-            new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa" },
-            //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17419", Region = "eur" },
+            //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa" },
+            new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17419", Region = "eur" },
             //new Game() { Name = "Persona 3 Dancing", ID = "p3d", TitleID = "CUSA12636", Region = "usa" },
             //new Game() { Name = "Persona 4 Dancing", ID = "p4d", TitleID = "CUSA12811", Region = "eur" },
             //new Game() { Name = "Persona 5 Dancing", ID = "p5d", TitleID = "CUSA12380", Region = "usa" }
@@ -247,7 +247,7 @@ namespace PatchedPKGGen
                     outputPKG = Path.Combine(temp, "UP0177-CUSA17416_00-PERSONA5R0000000-A0102-V0100.pkg");
                     break;
                 case "CUSA17419": // P5R (EUR)
-                    outputPKG = Path.Combine(temp, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0102-V0100.pkg");
+                    outputPKG = Path.Combine(temp, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0101.pkg");
                     break;
                 case "CUSA06638": // P5 PS4 (EUR)
                     outputPKG = Path.Combine(temp, $"EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg");
@@ -339,7 +339,7 @@ namespace PatchedPKGGen
             using (WaitForFile(outputPKG, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
             while (true)
             {
-                if (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length <= 0)
+                if (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length < 870645760)
                     Thread.Sleep(100);
                 else
                 {

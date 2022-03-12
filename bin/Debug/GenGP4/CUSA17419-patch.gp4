@@ -9,7 +9,7 @@
       passcode="00000000000000000000000000000000"
       storage_type="digital25"
       app_type="full"
-      app_path="H:\Games\Persona\Backups\PS4\Persona 5 Royal\EUR\EP0177-CUSA17419_00-PERSONA5R0000000-A0100-V0100.pkg"/>
+      app_path="G:\Persona\Backups\PS4\P5R\EUR\EP0177-CUSA17419_00-PERSONA5R0000000-A0100-V0100.pkg"/>
     <chunk_info chunk_count="3" scenario_count="1">
       <chunks>
         <chunk id="0" label="Chunk #0"/>
@@ -33,7 +33,6 @@
     <file targ_path="sce_sys/nptitle.dat" orig_path="CUSA17419-patch\sce_sys\nptitle.dat"/>
     <file targ_path="sce_sys/param.sfo" orig_path="CUSA17419-patch\sce_sys\param.sfo"/>
     <file targ_path="eboot.bin" orig_path="CUSA17419-patch\eboot.bin"/>
-    <file targ_path="USRDIR/mod.cpk" orig_path="CUSA17419-patch\USRDIR\mod.cpk" pfs_compression="enable" chunks="0-2"/>
     <file targ_path="USRDIR/patch2R.cpk" orig_path="CUSA17419-patch\USRDIR\patch2R.cpk" pfs_compression="enable" chunks="0-2"/>
     <file targ_path="USRDIR/patch2R_F.cpk" orig_path="CUSA17419-patch\USRDIR\patch2R_F.cpk" pfs_compression="enable" chunks="0-2"/>
     <file targ_path="USRDIR/patch2R_G.cpk" orig_path="CUSA17419-patch\USRDIR\patch2R_G.cpk" pfs_compression="enable" chunks="0-2"/>
