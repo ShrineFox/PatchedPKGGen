@@ -20,45 +20,37 @@ namespace PatchedPKGGen
 
         public static List<Game> Games = new List<Game>()
         {
-            //new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa" },
-            new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17419", Region = "eur" },
-            //new Game() { Name = "Persona 3 Dancing", ID = "p3d", TitleID = "CUSA12636", Region = "usa" },
-            //new Game() { Name = "Persona 4 Dancing", ID = "p4d", TitleID = "CUSA12811", Region = "eur" },
-            //new Game() { Name = "Persona 5 Dancing", ID = "p5d", TitleID = "CUSA12380", Region = "usa" }
+            new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17416", Region = "usa", UpdatePKGMinSize = 870645760,
+                UpdatePKGName = "UP0177-CUSA17416_00-PERSONA5R0000000-A0102-V0100.pkg" },
+            new Game() { Name = "Persona 5 Royal", ID = "p5r", TitleID = "CUSA17419", Region = "eur", UpdatePKGMinSize = 870645760,
+                UpdatePKGName = "EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0101.pkg" },
+            /*
+            new Game() { Name = "Persona 5", ID = "p5", TitleID = "CUSA06638", Region = "eur",
+                UpdatePKGName = "EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg" },
+            new Game() { Name = "Persona 3 Dancing", ID = "p3d", TitleID = "CUSA12636", Region = "usa", UpdatePKGMinSize = 13631488,
+                UpdatePKGName = "UP2611-CUSA12636_00-PERSONA3DUS00000-A0101-V0100.pkg" },
+            new Game() { Name = "Persona 4 Dancing", ID = "p4d", TitleID = "CUSA12811", Region = "eur", UpdatePKGMinSize = 11993088 ,
+                UpdatePKGName = "EP2475-CUSA12811_00-PERSONA4DEU00000-A0101-V0100.pkg" },
+            new Game() { Name = "Persona 5 Dancing", ID = "p5d", TitleID = "CUSA12380", Region = "usa", UpdatePKGMinSize = 13631488 ,
+                UpdatePKGName = "UP2611-CUSA12380_00-PERSONA5DUS00000-A0101-V0100.pkg" }
+            */
         };
-
-        //  0505           PS4 FW 5.05 Backport
-        //  all_dlc        Content Enabler
-        //  dlc_msg        Skip DLC Unlock Messages
-        //  intro_skip     Intro Skip
-        //  mod            Mod Support (PKG)
-        //  mod_efigs      Mod Support EFIGS (PKG)
-        //  mod2           Mod Support (FTP)
-        //  mod2_efigs     Mod Support EFIGS (FTP)
-        //  mod3           Mod Support (FTP HostFS)
-        //  mod3_efigs     Mod Support EFIGS (FTP HostFS)
-        //  no_trp         Disable Trophies
-        //  p5_save        P5 Save Bonus Enabler
-        //  share_button   Enable Share Button
-        //  square         Global Square Menu
-        //  bgm_ord        Sequential Battle BGM
-        //  bgm_rnd        Randomized Battle BGM
 
         public static List<Patch> P5RPatches = new List<Patch>()
         {
             // Required Patches
-            new Patch() { ID = "0505", Name = "5.05 Backport", ShortDesc = "Run on firmware 5.05+", Image = "",
+            new Patch() { ID = "0505", Name = "5.05 Backport", ShortDesc = "Run on firmware 5.05+",
                 LongDesc = "Allows the game to run on the lowest possible moddable PS4 firmware, and all those above it." , AlwaysOn = true },
-            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie",
                 LongDesc = "Skips boot logos and intro movie (can still be viewed in Thieves Den)." , AlwaysOn = true },
-            new Patch() { ID = "p5_save", Name = "P5 Save Bonus", ShortDesc = "Enables P5 save bonus without P5 saves present on system", Image = "" , AlwaysOn = true },
-            new Patch() { ID = "share_button", Name = "Enable Share Button", ShortDesc = "Enables video recording and screenshots using share button", Image = "", AlwaysOn = true },
-            new Patch() { ID = "square", Name = "Global Square Menu", ShortDesc = "Square button menu usable everywhere", Image = "",
+            new Patch() { ID = "p5_save", Name = "P5 Save Bonus", ShortDesc = "Enables P5 save bonus without P5 saves present on system", AlwaysOn = true },
+            new Patch() { ID = "share_button", Name = "Enable Share Button", ShortDesc = "Enables video recording and screenshots using share button", AlwaysOn = true },
+            new Patch() { ID = "square", Name = "Global Square Menu", ShortDesc = "Square button menu usable everywhere",
                 LongDesc = "Enables the square menu globally (e.g. in Thieves Den and in Velvet Room or during events or game sections which disable it).", AlwaysOn = true },
             // Mod Loader Patches (at least one is required)
-            new Patch() { ID = "mod2_efigs", Name = "FTP Mod Support (EFIGS)", ShortDesc = "m.cpk file replacement via FTP with optional language support", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
+            new Patch() { ID = "mod2_efigs", Name = "FTP Mod Support (EFIGS)", ShortDesc = "m.cpk file replacement via FTP with optional language support",
                 LongDesc = "Loads modded files from a <kbd>m.cpk</kbd> file in <code>/data/p5r</code> on the PS4's internal memory via FTP.<br>Optional language-specific .cpk files take priority when the system language isn't English (i.e. mF.cpk for French, mG.cpk for German etc.)" },
-            new Patch() { ID = "mod3_efigs", Name = "FTP HostFS Mod Support (EFIGS)", ShortDesc = "Loose file replacement via system language dependent directories", Image = "https://66.media.tumblr.com/c3f99e21c7edb1df53e7f2fa02117621/tumblr_inline_pl680q6yWy1rp7sxh_500.gif",
+            new Patch() { ID = "mod3_efigs", Name = "FTP HostFS Mod Support (EFIGS)", ShortDesc = "Loose file replacement via system language dependent directories",
                 LongDesc = "<b>EXPERIMENTAL</b> - this patch uses a debug function and might be unstable. Loads from loose files placed on the PS4's internal memory via FTP." +
                 "<br><code>/data/p5r/bind/</code> (English, always loaded - language specific directories below have a higher priority)" +
                 "<br><code>/data/p5r/bindF/</code> (French)" +
@@ -66,50 +58,50 @@ namespace PatchedPKGGen
                 "<br><code>/data/p5r/bindG/</code> (German)" +
                 "<br><code>/data/p5r/bindS/</code> (Spanish)" },
             // Optional Patches (all_dlc always includes dlc_msg)
-            new Patch() { ID = "all_dlc", Name = "Content Enabler", ShortDesc = "Enables on-disc content", Image = "",
+            new Patch() { ID = "all_dlc", Name = "Content Enabler", ShortDesc = "Enables on-disc content",
                 LongDesc = "<b>This will make saves created with this patch incompatible</b> with the game when the patch is disabled!"},
-            new Patch() { ID = "dlc_msg", Name = "Skip DLC Messages", ShortDesc = "Skip DLC Messages on New Game", Image = "",
+            new Patch() { ID = "dlc_msg", Name = "Skip DLC Messages", ShortDesc = "Skip DLC Messages on New Game",
                 LongDesc = "Especially useful when using the Content Enabler patch together with a mod that skips the title screen and boots directly into a field." },
             // Optional Patches (bgm_ord or bgm_rnd can only be enabled separate from eachother)
-            new Patch() { ID = "bgm_ord", Name = "Sequential Battle BGM", ShortDesc = "Plays different BGM track for each battle", Image = "",
+            new Patch() { ID = "bgm_ord", Name = "Sequential Battle BGM", ShortDesc = "Plays different BGM track for each battle",
                 LongDesc = "A different battle BGM track plays (in order) each time you encounter an enemy, regardless of equipped MC outfit." },
-            new Patch() { ID = "bgm_rnd", Name = "Randomized Battle BGM", ShortDesc = "Plays randomly selected BGM track for each battle", Image = "",
+            new Patch() { ID = "bgm_rnd", Name = "Randomized Battle BGM", ShortDesc = "Plays randomly selected BGM track for each battle",
                 LongDesc = "A different (random) battle BGM track plays each time you encounter an enemy, regardless of equipped MC outfit." },
             // Optional Patch
-            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", },
         };
 
         public static List<Patch> P3DPatches = new List<Patch>()
         {
-            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
+            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP",
                 LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
                            $"<br>or placed in <code>/data/p3d</code> on the PS4's internal memory via FTP." +
                             "<br>The latter takes priority.", AlwaysOn = true },
-            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie",
                 LongDesc = "Skips boot logos and intro movie.", AlwaysOn = true },
-            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
-            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", AlwaysOn = true }
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies" },
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", AlwaysOn = true }
         };
         public static List<Patch> P4DPatches = new List<Patch>()
         {
-            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
+            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP",
                 LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
                            $"<br>or placed in <code>/data/p4d</code> on the PS4's internal memory via FTP." +
                             "<br>The latter takes priority.", AlwaysOn = true },
-            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie",
                 LongDesc = "Skips boot logos and intro movie.", AlwaysOn = true },
-            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", },
         };
         public static List<Patch> P5DPatches = new List<Patch>()
         {
-            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP", Image = "",
+            new Patch() { ID = "mod", Name = "Mod Support", ShortDesc = "mod.cpk file replacement via PKG or FTP",
                 LongDesc = "Loads modded files from a <kbd>mod.cpk</kbd> file in the PKG's <code>USRDIR</code> directory," +
                            $"<br>or placed in <code>/data/p5d</code> on the PS4's internal memory via FTP." +
                             "<br>The latter takes priority.", AlwaysOn = true },
-            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie", Image = "",
+            new Patch() { ID = "intro_skip", Name = "Intro Skip", ShortDesc = "Bypass opening logos/movie",
                 LongDesc = "Skips boot logos and intro movie.", AlwaysOn = true },
-            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies", Image = "" },
-            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", Image = "", AlwaysOn = true }
+            new Patch() { ID = "no_trp", Name = "Disable Trophies", ShortDesc = "Prevents the game from unlocking trophies" },
+            new Patch() { ID = "overlay", Name = "Disable Screenshot Overlay", ShortDesc = "Removes the annoying copyright overlay from in-game screenshots", AlwaysOn = true }
         };
 
         public static IEnumerable<T[]> Permutations<T>(IEnumerable<T> source)
@@ -187,6 +179,7 @@ namespace PatchedPKGGen
             {
                 List<string> combinationNames = new List<string>(); // List of each patch name in combo
                 List<string> combinationIDs = new List<string>(); // List of each patch name in combo
+                
                 string comboPath = gamePath; // New folder for combo results to go in
                 foreach (var patch in combination)
                 {
@@ -211,7 +204,7 @@ namespace PatchedPKGGen
                         // If Patched EBOOT exists...
                         using (WaitForFile(patchedEbootPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
                         if (File.Exists(patchedEbootPath))
-                            CreatePKG(game.TitleID, patchedEbootPath, String.Join("\n", combinationNames), comboPath);
+                            CreatePKG(game, patchedEbootPath, String.Join("\n", combinationNames), comboPath);
                         else
                             Console.WriteLine($"  EBOOT Patch failed. No patched EBOOT found at: {patchedEbootPath}");
                     }
@@ -224,9 +217,9 @@ namespace PatchedPKGGen
             Console.WriteLine($"\nDone Generating Pre-Patched Output for {game.TitleID} ({game.Name}, {game.Region})!");
         }
 
-        private static void CreatePKG(string titleID, string ebootPath, string description, string comboPath)
+        private static void CreatePKG(Game game, string ebootPath, string description, string comboPath)
         {
-            string newEbootPath = Path.Combine(Path.Combine(Path.Combine(programPath, "GenGP4"), $"{titleID}-patch"), "eboot.bin");
+            string newEbootPath = Path.Combine(Path.Combine(Path.Combine(programPath, "GenGP4"), $"{game.TitleID}-patch"), "eboot.bin");
 
             // Double-check that previous PKG generation or EBOOT patching isn't still running
             KillCMD();
@@ -238,30 +231,9 @@ namespace PatchedPKGGen
             File.Copy(ebootPath, newEbootPath, true);
             Console.WriteLine($"  Overwrote PKG EBOOT with patched one." +
                 $"\n  Creating Update PKG...");
-            
-            string outputPKG = ""; // Path where we expect output PKG to be generated
+
             string temp = Path.Combine(Path.Combine(programPath, "GenGP4"), "temp"); // Temp PKG Builder Folder
-            switch (titleID) 
-            {
-                case "CUSA17416": // P5R (USA)
-                    outputPKG = Path.Combine(temp, "UP0177-CUSA17416_00-PERSONA5R0000000-A0102-V0100.pkg");
-                    break;
-                case "CUSA17419": // P5R (EUR)
-                    outputPKG = Path.Combine(temp, $"EP0177-CUSA17419_00-PERSONA5R0000000-A0101-V0101.pkg");
-                    break;
-                case "CUSA06638": // P5 PS4 (EUR)
-                    outputPKG = Path.Combine(temp, $"EP4062-CUSA06638_00-PERSONA512345678-A0101-V0100.pkg");
-                    break;
-                case "CUSA12636": // P3D (USA)
-                    outputPKG = Path.Combine(temp, $"UP2611-CUSA12636_00-PERSONA3DUS00000-A0101-V0100.pkg");
-                    break;
-                case "CUSA12811": // P4D (EUR)
-                    outputPKG = Path.Combine(temp, $"EP2475-CUSA12811_00-PERSONA4DEU00000-A0101-V0100.pkg");
-                    break;
-                case "CUSA12380": // P5D (USA)
-                    outputPKG = Path.Combine(temp, $"UP2611-CUSA12380_00-PERSONA5DUS00000-A0101-V0100.pkg");
-                    break;
-            }
+            string outputPKG = Path.Combine(temp, game.UpdatePKGName); // Path where we expect output PKG to be generated
 
             // Delete existing Temp folder and recreate it
             if (Directory.Exists(temp))
@@ -270,11 +242,11 @@ namespace PatchedPKGGen
 
             // Update PKG description
             Console.WriteLine("    Updating PKG description...");
-            File.WriteAllText($"{programPath}\\GenGP4\\{titleID}-patch\\sce_sys\\changeinfo\\changeinfo.xml", $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<changeinfo>\n  <changes app_ver=\"01.01\">\n    <![CDATA[\nPatched using ShrineFox.com/UpdateCreator\n(based on zarroboogs's ppp):\n\n{description}\n    ]]>\n  </changes>\n</changeinfo>");
+            File.WriteAllText($"{programPath}\\GenGP4\\{game.TitleID}-patch\\sce_sys\\changeinfo\\changeinfo.xml", $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<changeinfo>\n  <changes app_ver=\"01.01\">\n    <![CDATA[\nPatched using ShrineFox.com/UpdateCreator\n(based on zarroboogs's ppp):\n\n{description}\n    ]]>\n  </changes>\n</changeinfo>");
 
             // Create PKG from GP4
             Console.WriteLine("    Running orbis-pub-cmd...");
-            Build($"img_create --oformat pkg --tmp_path ./temp {titleID}-patch.gp4 ./temp", outputPKG);
+            Build(game, outputPKG);
 
             // Clean up temp folders and end any lingering PKG creation/EBOOT patching processes
             if (File.Exists(outputPKG))
@@ -320,9 +292,10 @@ namespace PatchedPKGGen
             p.WaitForExit();
         }
 
-        private static void Build(string args, string outputPKG)
+        private static void Build(Game game, string outputPKG)
         {
             string pkgBuilder = $"{programPath}\\GenGP4\\orbis-pub-cmd.exe";
+            string args = $"img_create --oformat pkg --tmp_path ./temp {game.TitleID}-patch.gp4 ./temp";
             Console.WriteLine($"  PKG Builder Args:\n  {args}");
 
             Process p = new Process();
@@ -339,7 +312,7 @@ namespace PatchedPKGGen
             using (WaitForFile(outputPKG, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100)) { };
             while (true)
             {
-                if (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length < 870645760)
+                if (!File.Exists(outputPKG) || new FileInfo(outputPKG).Length < game.UpdatePKGMinSize)
                     Thread.Sleep(100);
                 else
                 {
@@ -414,15 +387,16 @@ namespace PatchedPKGGen
         public string ID { get; set; } = "";
         public string TitleID { get; set; } = "";
         public string Region { get; set; } = "";
+        public string UpdatePKGName { get; set; } = "";
+        public int UpdatePKGMinSize { get; set; } = 0;
     }
-
+    
     public class Patch
     {
         public string Name { get; set; } = "";
         public string ID { get; set; } = "";
         public string ShortDesc { get; set; } = "";
         public string LongDesc { get; set; } = "";
-        public string Image { get; set; } = "";
         public bool AlwaysOn { get; set; } = false;
     }
 }
